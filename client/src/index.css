@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* H5 Marketing System Design Tokens */
+  --primary: hsl(160, 84%, 39%); /* #059669 emerald-600 */
+  --secondary: hsl(210, 40%, 2%); /* #0F172A slate-900 */
+  --tertiary: hsl(215, 20%, 65%); /* #64748B slate-500 */
+  --danger: hsl(0, 74%, 42%); /* #DC2626 */
+  --disabled: hsl(214, 32%, 91%); /* #CBD5E1 */
+  
+  /* Base colors */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(210, 40%, 2%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(210, 40%, 2%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(210, 40%, 2%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(160, 84%, 95%);
+  --accent-foreground: hsl(160, 84%, 39%);
+  --destructive: hsl(0, 74%, 42%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --ring: hsl(160, 84%, 39%);
+
+  /* Typography */
+  --font-inter: 'Inter', 'Noto Sans Thai', 'Noto Sans SC', sans-serif;
+  
+  /* Spacing - 8px grid */
+  --spacing-unit: 0.5rem; /* 8px */
+  
+  /* Border radius */
+  --radius-button: 0.625rem; /* 10px */
+  --radius-card: 1rem; /* 16px */
+  
+  /* Button heights */
+  --btn-height-mobile: 3rem; /* 48px */
+  --btn-height-desktop: 2.5rem; /* 40px */
+  
+  /* Container width */
+  --container-desktop: 75rem; /* 1200px */
+  
+  /* Mobile topbar height */
+  --topbar-height: 3.5rem; /* 56px */
+}
+
+.dark {
+  --background: hsl(210, 40%, 2%);
+  --foreground: hsl(0, 0%, 95%);
+  --card: hsl(210, 40%, 4%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --popover: hsl(210, 40%, 2%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(210, 40%, 8%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(160, 84%, 10%);
+  --accent-foreground: hsl(160, 84%, 39%);
+  --border: hsl(210, 40%, 12%);
+  --input: hsl(210, 40%, 12%);
+}
+
+@layer base {
+  /* 移动端全屏适配和安全区域 */
+  :root {
+    /* 安全区域变量 - 适配刘海屏、状态栏等 */
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-right: env(safe-area-inset-right);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    --safe-area-inset-left: env(safe-area-inset-left);
+    
+    /* 固定头部高度，包含安全区域 */
+    --header-height: calc(3.5rem + var(--safe-area-inset-top));
+    /* 固定底部导航高度，包含安全区域 */
+    --bottom-nav-height: calc(4rem + var(--safe-area-inset-bottom));
+  }
+
+  /* 确保固定头部在所有设备上都稳定 */
+  .mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    /* 添加模糊背景支持 */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  /* 优化移动端滚动体验 */
+  @supports (-webkit-touch-callout: none) {
+    .mobile-scroll-container {
+      /* iOS Safari 优化 */
+      -webkit-overflow-scrolling: touch;
+      transform: translateZ(0); /* 启用硬件加速 */
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  /* 全局布局优化 */
+  html, body {
+    height: 100vh;
+    height: 100dvh; /* 动态视窗高度，更适合移动端 */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* iOS平滑滚动 */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    /* 避免移动端滚动时的弹性效果 */
+    overscroll-behavior: none;
+    /* 防止移动端双击缩放 */
+    touch-action: manipulation;
+    /* 适配安全区域 */
+    padding-top: var(--safe-area-inset-top);
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
+  }
+
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: var(--font-inter);
+    line-height: 1.5;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter);
+  }
+}
+
+@layer components {
+  /* Mobile-first button styling */
+  .btn-mobile {
+    height: var(--btn-height-mobile);
+    border-radius: var(--radius-button);
+    @apply font-medium transition-colors;
+  }
+  
+  .btn-desktop {
+    height: var(--btn-height-desktop);
+    border-radius: var(--radius-button);
+    @apply font-medium transition-colors;
+  }
+  
+  /* Responsive button that adapts to screen size */
+  .btn-responsive {
+    height: var(--btn-height-mobile);
+    border-radius: var(--radius-button);
+    @apply font-medium transition-colors;
+  }
+  
+  @screen lg {
+    .btn-responsive {
+      height: var(--btn-height-desktop);
+    }
+  }
+  
+  /* Primary button variants */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90;
+  }
+  
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary hover:text-primary-foreground;
+  }
+  
+  .btn-disabled {
+    @apply bg-disabled text-muted-foreground cursor-not-allowed;
+  }
+  
+  /* Card styling */
+  .card-activity {
+    @apply bg-card rounded-[var(--radius-card)] overflow-hidden shadow-sm;
+  }
+  
+  /* Topbar styling */
+  .topbar-mobile {
+    height: var(--topbar-height);
+    @apply bg-background shadow-sm sticky top-0 z-40;
+  }
+  
+  /* Desktop container */
+  .container-desktop {
+    max-width: var(--container-desktop);
+    @apply mx-auto;
+  }
+  
+  /* Loading shimmer animation */
+  .loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Responsive visibility */
+  .mobile-only {
+    @apply block lg:hidden;
+  }
+  
+  .desktop-only {
+    @apply hidden lg:block;
+  }
+  
+  /* Admin content blur for mobile */
+  @media (max-width: 1023px) {
+    .admin-content {
+      filter: blur(4px);
+      pointer-events: none;
+    }
+  }
+  
+  /* Line clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Hero gradient */
+  .hero-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, hsl(160, 84%, 35%) 100%);
+  }
+  
+  /* Activity type badges */
+  .badge-coupon {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  .badge-group {
+    @apply bg-purple-100 text-purple-800;
+  }
+  
+  .badge-presale {
+    @apply bg-orange-100 text-orange-800;
+  }
+  
+  .badge-franchise {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  /* Status badges */
+  .badge-draft {
+    @apply bg-gray-100 text-gray-800;
+  }
+  
+  .badge-published {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-paused {
+    @apply bg-orange-100 text-orange-800;
+  }
+  
+  .badge-archived {
+    @apply bg-red-100 text-red-800;
+  }
+}
+
+@layer utilities {
+  /* Aspect ratio utilities */
+  .aspect-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+  
+  /* Custom text colors using design tokens */
+  .text-primary-custom {
+    color: var(--primary);
+  }
+  
+  .text-secondary-custom {
+    color: var(--secondary);
+  }
+  
+  .text-tertiary-custom {
+    color: var(--tertiary);
+  }
+  
+  .text-danger-custom {
+    color: var(--danger);
+  }
+  
+  /* Background colors using design tokens */
+  .bg-primary-custom {
+    background-color: var(--primary);
+  }
+  
+  .bg-secondary-custom {
+    background-color: var(--secondary);
+  }
+  
+  .bg-disabled-custom {
+    background-color: var(--disabled);
+  }
+}
