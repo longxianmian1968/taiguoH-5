@@ -1,13 +1,14 @@
 {
   "name": "h5-marketing-system",
   "version": "1.0.0",
+  "type": "module",
   "description": "H5 Marketing System for LINE LIFF",
   "main": "server/index.js",
   "scripts": {
     "dev": "tsx server/vite.ts",
-    "build": "vite build && npm run build:server",
-    "build:server": "tsc -p server/tsconfig.json",
-    "start": "node server/dist/index.js",
+    "build": "vite build",
+    "build:server": "echo 'Skipping TypeScript compilation for Railway deployment'", 
+    "start": "tsx server/index.ts",
     "db:push": "drizzle-kit push:pg",
     "db:generate": "drizzle-kit generate:pg",
     "vercel-build": "npm run build"
